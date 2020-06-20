@@ -1,0 +1,21 @@
+baseURL: https://reacoma.xyz
+languageCode: "en-us"
+title: ReaCoMa
+theme: book
+
+publishDir: public
+
+enableGitInfo: false
+params:
+  BookMenuBundle: /menu
+  BookRepo: https://github.com/jamesb93/phd-site-hugo
+  BookServiceWorker: true
+  BookSearch: false
+
+markup:
+  tableOfContents:
+    startLevel: 0
+    endLevel: 6 
+  goldmark:
+    renderer:
+      unsafe: true
