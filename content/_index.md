@@ -23,8 +23,6 @@ This site acts as documentation for the project and provides instruction on inst
 {{< /columns >}}
 
 
-
-
 Thank you to Pierre Alexandre Tremblay for guiding me through the process of developing ReaCoMa. The command line tools themselves are not my own work, but a product of the FluCoMa project which can be found here. Part of this work was generously funded by the Huddersfield Creative Coding Lab.
 
 https://www.flucoma.org
