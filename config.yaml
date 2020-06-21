@@ -9,7 +9,6 @@ enableGitInfo: false
 params:
   BookMenuBundle: /menu
   BookRepo: https://github.com/jamesb93/phd-site-hugo
-  BookServiceWorker: true
   BookSearch: false
 
 markup:
