@@ -24,14 +24,13 @@ This site acts as documentation for the project and provides instruction on inst
 
 {{< /columns >}}
 
-The source code can be found [here](https://github.com/jamesb93/reacoma)
+The source code can be found [here](https://github.com/jamesb93/reacoma) along with the [**latest release as a zip**](https://github.com/jamesb93/ReaCoMa/archive/master.zip).
 
-
-Thank you to Pierre Alexandre Tremblay for guiding me through the process of developing ReaCoMa. The command line tools themselves are not my own work, but a product of the FluCoMa project which can be found here. Part of this work was generously funded by the Huddersfield Creative Coding Lab.
+Thank you to [Pierre Alexandre Tremblay](https://www.pierrealexandretremblay.com) for guiding me through the process of developing ReaCoMa. The command line tools themselves are not my own work, but a product of the FluCoMa project which can be found here. Part of this work was generously funded by the Huddersfield Creative Coding Lab.
 
 https://www.flucoma.org
 
 
 <br><br><br>
 
-<p class="thanks">Thank you to Niamh Dell for the sleeping reaper logo.</p>
+<p class="thanks">Thank you to [Niamh Dell](mailto//:dell.niamh@gmail.com) for the sleeping reaper logo.</p>
