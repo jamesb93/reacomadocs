@@ -5,7 +5,7 @@ type: docs
 
 <img src="/img/logo_compressed.jpg" alt="reacoma_logo" class="center-image">
 
-ReaCoMa is a project developed by [James Bradbury](https://jamesbradbury.xyz). The project brings the power of the [FluCoMa tools](https://www.flucoma.org) to REAPER. 
+ReaCoMa is a project developed by [James Bradbury](https://www.jamesbradbury.xyz). The project brings the power of the [FluCoMa tools](https://www.flucoma.org) to REAPER. 
 
 This site acts as documentation for the project and provides instruction on installation as well as further development using the ReaComa library that is implemented in the package.
 
