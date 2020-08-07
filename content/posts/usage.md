@@ -20,11 +20,22 @@ So far, all of the slicing based algorithms will directly segment media items in
 
 ### Objects/Layers
 
-Any algorithm that should produce new media files, `nmf`, `hpss`, `transients` or `sines` obey the following logic.
+Any algorithm that should produce new media files, `nmf`, `hpss`, `transients` or `sines` output to a location set by ReaCoMa. By default, new files are located within the same directory as the source material. You can modify this behaviour by changing the value for `reacoma.output` in `config.lua`.
 
-**Always process the source file and place the resulting files in the same directory as the source with an incremental name.**
+{{< hint info >}}
 
-Please remember this, so I'm not responsible for the loss of the next masterpiece. It is your job to make sure that source files are in a project, or a known location before you go wild with processsing. Given that the output media files will be in your arrangement view on completion you can rapidly process some audio in an unsaved project but make sure that you have a strategy for moving all of the audio into a folder ideally close to the `.RPP` file.
+There are three options for changing the ReaCoMa output.
+
+#### "source" 
+New files will be output to the same directory as the source
+
+#### "media"
+New files will be output to the REAPER Media folder.
+
+#### custom path  
+New files will be output to the path set. The path needs to be absolute, but ~ expansion is supported.
+
+{{< /hint >}}
 
 The results of the process will be appended to a take of the source material. `fluid-sines.lua` for example will append 2 new takes to the original source item containing the sinusoidal and residual extractions respectively. My rationale for implementing this behaviour is so that you can quickly audition the results or replace source audio with your output process without too much fiddling. The outlier in this case is `fluid-nmf.lua` which will append a multichannel take containing the components asked for by the user.
 
