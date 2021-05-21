@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on ReaCoMa</title>
+    <link>https://reacoma.xyz/posts/</link>
+    <description>Recent content in Posts on ReaCoMa</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="https://reacoma.xyz/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title></title>
+      <link>https://reacoma.xyz/posts/dev/layers/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://reacoma.xyz/posts/dev/layers/</guid>
+      <description>layers.lua #  Let&amp;rsquo;s break down the essential components of layers.lua.
+The container #  The layers.container is a table that represents the lifetime of a layers type process.
+layers.container = { full_path = {}, take = {}, item_pos = {}, item_pos_samples = {}, take_ofs = {}, take_ofs_samples = {}, item_len = {}, item_len_samples = {}, cmd = {}, item = {}, sr = {}, playrate = {}, playtype = {}, reverse = {}, outputs = {}, } It contains information such as the full path in your file system of media items and REAPER specific information such as the position, length, sample rate, playback rate and reverse status.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://reacoma.xyz/posts/dev/parameters/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://reacoma.xyz/posts/dev/parameters/</guid>
+      <description>parameters.lua #  You might want to create parameters for your custom process to facilitate rapid prototyping and to make it more flexible. A part of the ReaComa lib helps facilitate the management of parameters and gives you some functionality for free such as storage, recall and defaults. For each &amp;lsquo;default&amp;rsquo; ReaCoMa script I&amp;rsquo;ve mirrored the defaults that can be found in the Max or Supercollider documentation while also making it so that once the user changes a given parameter it will use that as the new default for each execution of the script.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://reacoma.xyz/posts/dev/slicing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://reacoma.xyz/posts/dev/slicing/</guid>
+      <description>slicing.lua #  The slicing container #  The slicing container is very similar to the layers container containing empty containers that are ready to fill with relevant information for processing. What is unique to the slicing container is a blank internal table to hold slicing indices named slice_points_string. This is where we hold information on where to segment the source media item.
+slicing.container = { full_path = {}, item_pos = {}, item_pos_samples = {}, take_ofs = {}, take_ofs_samples = {}, item_len_samples = {}, cmd = {}, slice_points_string = {}, tmp = {}, item = {}, reverse = {}, sr = {}, playrate = {} } Populating the container #  Populating our data container is the same as what we have seen already.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://reacoma.xyz/posts/installation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://reacoma.xyz/posts/installation/</guid>
+      <description>Installation #  Step 1: Command Line Tools #  All of the number crunching and DSP is performed by the FluCoMa command line tools. You will need to download the appropriate version for your operating system. Precompiled binaries can be found here or you can compile them from source.
+Once you have a set of the binaries you will need to store them in a sensible location that is likely not to change.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://reacoma.xyz/posts/tutorials/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://reacoma.xyz/posts/tutorials/</guid>
+      <description>Tutorials #  Several tutorials covering topics such as installation, usage, algorithms and development have been created as a learning resource.
+These tutorials can be found on YouTube at these links.
+Playlist of all tutorials in order
+ Tutorial 1: Introduction
+Tutorial 2: Installation and Usage
+Tutorial 3: Creating a GUI</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://reacoma.xyz/posts/usage/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://reacoma.xyz/posts/usage/</guid>
+      <description>Usage #  How to execute the scripts #  Once you have followed all the steps of the installation process you can simply execute one of the scripts by doing the following.
+ Shift + / (or as I like to call it ?) to bring up the Action Menu Select the action ReaScript: Run Reascript (EEL or Lua) Select the desired script which you have cleverly stored in an easy to find location.</description>
+    </item>
+    
+    <item>
+      <title>ReaCoMa</title>
+      <link>https://reacoma.xyz/posts/development/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://reacoma.xyz/posts/development/</guid>
+      <description>Developing using the ReaCoMa library #  ReaCoMa-lib #  The first thing to understand the small lua library that underpins the orchestration of ReaCoMa processes. This can be found in the subdirectory &amp;lsquo;lib&amp;rsquo; of the main repository. In this directory are several lua files with names describing their function. It&amp;rsquo;s worth having a dig into these files to become more familiar with some of the functions and tables that are defined there.</description>
+    </item>
+    
+  </channel>
+</rss>

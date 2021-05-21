@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Installation #  Step 1: Command Line Tools #  All of the number crunching and DSP is performed by the FluCoMa command line tools. You will need to download the appropriate version for your operating system. Precompiled binaries can be found here or you can compile them from source.
+Once you have a set of the binaries you will need to store them in a sensible location that is likely not to change.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="" />
+<meta property="og:description" content="Installation #  Step 1: Command Line Tools #  All of the number crunching and DSP is performed by the FluCoMa command line tools. You will need to download the appropriate version for your operating system. Precompiled binaries can be found here or you can compile them from source.
+Once you have a set of the binaries you will need to store them in a sensible location that is likely not to change." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://reacoma.xyz/posts/installation/" /><meta property="article:section" content="posts" />
+
+
+
+<title>Installation | ReaCoMa</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.8e82c146d672b4664b6f4f4a73d2435cb93d1290768897bbef6d59436d2d8fea.css" integrity="sha256-joLBRtZytGZLb09Kc9JDXLk9EpB2iJe7721ZQ20tj&#43;o="><!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>ReaCoMa</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><a href="/posts/tutorials/">Tutorials</a></li>
+<li><a href="/posts/installation/"class=active>Installation</a></li>
+<li><a href="/posts/usage/">Usage</a></li>
+<li><a href="/posts/development/">Development</a>
+<ul>
+<li><a href="/posts/dev/layers/">Layers</a></li>
+<li><a href="/posts/dev/slicing/">Slicing</a></li>
+<li><a href="/posts/dev/parameters/">Parameters</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Installation</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#installation">Installation</a>
+      <ul>
+        <li><a href="#step-1-command-line-tools">Step 1: Command Line Tools</a></li>
+        <li><a href="#step-2-lua-scripts">Step 2: Lua Scripts</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown">
+  <h1>
+    <a href="/posts/installation/"></a>
+  </h1>
+  
+
+
+  
+
+  
+
+
+  <p><h1 id="installation">
+  Installation
+  <a class="anchor" href="#installation">#</a>
+</h1>
+<h2 id="step-1-command-line-tools">
+  Step 1: Command Line Tools
+  <a class="anchor" href="#step-1-command-line-tools">#</a>
+</h2>
+<p>All of the number crunching and DSP is performed by the FluCoMa command line tools. You will need to download the appropriate version for your operating system. Precompiled binaries can be found <a href="https://www.flucoma.org/download">here</a> or you can compile them from <a href="https://github.com/flucoma/flucoma-cli">source</a>.</p>
+<p>Once you have a set of the binaries you will need to store them in a sensible location that is likely not to change.</p>
+<hr>
+<h2 id="step-2-lua-scripts">
+  Step 2: Lua Scripts
+  <a class="anchor" href="#step-2-lua-scripts">#</a>
+</h2>
+<p>The lua scripts orchestrate calls between REAPER and the command line executables. They take care of things like providing a basic user interface and the specification of parameters for each algorithm.</p>
+<ol>
+<li>Download all of the files from this repository.</li>
+</ol>
+<p><a href="https://github.com/jamesb93/ReaCoMa/archive/master.zip">https://github.com/jamesb93/ReaCoMa/archive/master.zip</a></p>
+<ol start="2">
+<li>Unzip the downloaded archive and you will have a folder contaning a number of files ending with the <code>.lua</code> extension - these are the scripts that relate to each FluCoMa algorithm.</li>
+</ol>
+<p>You can have this folder anywhere you want on your machine, REAPER doesn&rsquo;t actually care too much about where a script is launched from and I have made sure that any dependencies are sorted out in-house and not as part of your REAPER installation. The entire thing is <em>very</em> portable.</p>
+<p>When you try to run the lua scripts for the first time it will ask you to provide the path where you stored the command line tools. This creates a semi-permanent link between the scripts and ReaCoMa using internal <a href="https://www.reaper.fm/sdk/reascript/reascripthelp.html#SetExtState">extended states</a> in the REAPER ReaScript API.</p>
+</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+ 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/instantclick/3.1.0/instantclick.min.js" data-no-instant></script>
+<script data-no-instant>InstantClick.init();</script>
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#installation">Installation</a>
+      <ul>
+        <li><a href="#step-1-command-line-tools">Step 1: Command Line Tools</a></li>
+        <li><a href="#step-2-lua-scripts">Step 2: Lua Scripts</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/gh/cferdinandi/gumshoe@5/dist/gumshoe.polyfills.min.js"></script>
+<script>new Gumshoe('.book-toc a', { nested: true });</script>
+<style>
+.book-toc li.active > a {
+    font-weight: bold;
+}
+</style>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

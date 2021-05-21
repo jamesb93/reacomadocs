@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Developing using the ReaCoMa library #  ReaCoMa-lib #  The first thing to understand the small lua library that underpins the orchestration of ReaCoMa processes. This can be found in the subdirectory &lsquo;lib&rsquo; of the main repository. In this directory are several lua files with names describing their function. It&rsquo;s worth having a dig into these files to become more familiar with some of the functions and tables that are defined there.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="ReaCoMa" />
+<meta property="og:description" content="Developing using the ReaCoMa library #  ReaCoMa-lib #  The first thing to understand the small lua library that underpins the orchestration of ReaCoMa processes. This can be found in the subdirectory &lsquo;lib&rsquo; of the main repository. In this directory are several lua files with names describing their function. It&rsquo;s worth having a dig into these files to become more familiar with some of the functions and tables that are defined there." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://reacoma.xyz/posts/development/" /><meta property="article:section" content="posts" />
+
+
+
+<title>ReaCoMa | ReaCoMa</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.8e82c146d672b4664b6f4f4a73d2435cb93d1290768897bbef6d59436d2d8fea.css" integrity="sha256-joLBRtZytGZLb09Kc9JDXLk9EpB2iJe7721ZQ20tj&#43;o="><!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>ReaCoMa</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><a href="/posts/tutorials/">Tutorials</a></li>
+<li><a href="/posts/installation/">Installation</a></li>
+<li><a href="/posts/usage/">Usage</a></li>
+<li><a href="/posts/development/"class=active>Development</a>
+<ul>
+<li><a href="/posts/dev/layers/">Layers</a></li>
+<li><a href="/posts/dev/slicing/">Slicing</a></li>
+<li><a href="/posts/dev/parameters/">Parameters</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>ReaCoMa</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#developing-using-the-reacoma-library">Developing using the ReaCoMa library</a>
+      <ul>
+        <li><a href="#reacoma-lib">ReaCoMa-lib</a></li>
+        <li><a href="#reacomalua">reacoma.lua</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="developing-using-the-reacoma-library">
+  Developing using the ReaCoMa library
+  <a class="anchor" href="#developing-using-the-reacoma-library">#</a>
+</h1>
+<h2 id="reacoma-lib">
+  ReaCoMa-lib
+  <a class="anchor" href="#reacoma-lib">#</a>
+</h2>
+<p>The first thing to understand the small lua library that underpins the orchestration of ReaCoMa processes. This can be found in the subdirectory &lsquo;lib&rsquo; of the main repository. In this directory are several lua files with names describing their function. It&rsquo;s worth having a dig into these files to become more familiar with some of the functions and tables that are defined there.</p>
+<h2 id="reacomalua">
+  reacoma.lua
+  <a class="anchor" href="#reacomalua">#</a>
+</h2>
+<p>The first major component that you should look at is <code>reacoma.lua</code>. This is the entry point to the library itself and should be imported at the top of any script you are developing. The conventional way of doing this is to use <code>loadfile()</code> which will parse the lua file but not execute it. In the below example I use the strong pattern matching in lua to get the location of the script that I&rsquo;m currently developing and construct the full path of the <code>reacoma.lua</code> file from there.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#66d9ef">local</span> info <span style="color:#f92672">=</span> debug.getinfo(<span style="color:#ae81ff">1</span>,<span style="color:#e6db74">&#39;S&#39;</span>);
+<span style="color:#66d9ef">local</span> script_path <span style="color:#f92672">=</span> info.source:match<span style="color:#e6db74">[[^@?(.*[\/])[^\/]-$]]</span>
+loadfile(script_path <span style="color:#f92672">..</span> <span style="color:#e6db74">&#34;lib/reacoma.lua&#34;</span>)()
+</code></pre></div><p>Calling <code>loadfile()</code> to load <code>reacoma.lua</code> is similar to a Pythonic <code>import reacoma</code> for example. Once you&rsquo;ve done this you have access to all of the library functions, variables and data structures and the conventional way to then utilise these is to orchestrate whatever functionality you need around these imported items.</p>
+<p>Now we&rsquo;ll go into more detail about the two types of processes: layers and slicing which will give you the understanding to make your own archetypes.</p>
+
+
+
+
+  
+
+<a  href="/posts/dev/layers/"   class="book-btn">
+  Layers
+</a>
+
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+ 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/instantclick/3.1.0/instantclick.min.js" data-no-instant></script>
+<script data-no-instant>InstantClick.init();</script>
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#developing-using-the-reacoma-library">Developing using the ReaCoMa library</a>
+      <ul>
+        <li><a href="#reacoma-lib">ReaCoMa-lib</a></li>
+        <li><a href="#reacomalua">reacoma.lua</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/gh/cferdinandi/gumshoe@5/dist/gumshoe.polyfills.min.js"></script>
+<script>new Gumshoe('.book-toc a', { nested: true });</script>
+<style>
+.book-toc li.active > a {
+    font-weight: bold;
+}
+</style>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

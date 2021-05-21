@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="parameters.lua #  You might want to create parameters for your custom process to facilitate rapid prototyping and to make it more flexible. A part of the ReaComa lib helps facilitate the management of parameters and gives you some functionality for free such as storage, recall and defaults. For each &lsquo;default&rsquo; ReaCoMa script I&rsquo;ve mirrored the defaults that can be found in the Max or Supercollider documentation while also making it so that once the user changes a given parameter it will use that as the new default for each execution of the script.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="" />
+<meta property="og:description" content="parameters.lua #  You might want to create parameters for your custom process to facilitate rapid prototyping and to make it more flexible. A part of the ReaComa lib helps facilitate the management of parameters and gives you some functionality for free such as storage, recall and defaults. For each &lsquo;default&rsquo; ReaCoMa script I&rsquo;ve mirrored the defaults that can be found in the Max or Supercollider documentation while also making it so that once the user changes a given parameter it will use that as the new default for each execution of the script." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://reacoma.xyz/posts/dev/parameters/" /><meta property="article:section" content="posts" />
+
+
+
+<title>Parameters | ReaCoMa</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.8e82c146d672b4664b6f4f4a73d2435cb93d1290768897bbef6d59436d2d8fea.css" integrity="sha256-joLBRtZytGZLb09Kc9JDXLk9EpB2iJe7721ZQ20tj&#43;o="><!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>ReaCoMa</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><a href="/posts/tutorials/">Tutorials</a></li>
+<li><a href="/posts/installation/">Installation</a></li>
+<li><a href="/posts/usage/">Usage</a></li>
+<li><a href="/posts/development/">Development</a>
+<ul>
+<li><a href="/posts/dev/layers/">Layers</a></li>
+<li><a href="/posts/dev/slicing/">Slicing</a></li>
+<li><a href="/posts/dev/parameters/"class=active>Parameters</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Parameters</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#parameterslua">parameters.lua</a></li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown">
+  <h1>
+    <a href="/posts/dev/parameters/"></a>
+  </h1>
+  
+
+
+  
+
+  
+
+
+  <p><h1 id="parameterslua">
+  parameters.lua
+  <a class="anchor" href="#parameterslua">#</a>
+</h1>
+<p>You might want to create parameters for your custom process to facilitate rapid prototyping and to make it more flexible. A part of the ReaComa <code>lib</code> helps facilitate the management of parameters and gives you some functionality for free such as storage, recall and defaults. For each &lsquo;default&rsquo; ReaCoMa script I&rsquo;ve mirrored the defaults that can be found in the Max or Supercollider documentation while also making it so that once the user changes a given parameter it will use that as the new default for each execution of the script. You don&rsquo;t have to make your scripts work this way though and its entirely up to you how you deal with parameters depending on how you structure your code. Let&rsquo;s break down the <code>fluid-noveltyslice.lua</code> example on how parameters work within the <code>lib</code>.</p>
+<p>For each process that you want to have defaults for you&rsquo;ll need to create an <em>&lsquo;archetype&rsquo;</em>. These are created in the <code>params.lua</code> file inside the <code>params.archetype</code> table. The archetype for <code>fluid-noveltyslice.lua</code> looks like this.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua">noveltyslice <span style="color:#f92672">=</span> {
+    name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;fluidParamNoveltySlice&#34;</span>,
+    feature <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;0&#34;</span>,
+    fftsettings <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;1024 -1 -1&#34;</span>,
+    filtersize <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;1&#34;</span>,
+    kernelsize <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;3&#34;</span>,
+    threshold <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;0.5&#34;</span>,
+    minslicelength <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;2&#34;</span>,
+}
+</code></pre></div><p>The only essential component is that you give your archetype a unique <code>name</code> value. Everything else is up to you including the name of parameters and the data type for the paramete you hold. I&rsquo;ve implemented them as strings because it makes sense for forming command line calls but you&rsquo;re welcome to use any native lua type you want, it depends how you use these parameters later. The <code>name</code> value gives your archetype an identity for storage in the REAPER extended states API.</p>
+<p>In your code you first want to create an instance of your parameter archetype.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#66d9ef">local</span> processor <span style="color:#f92672">=</span> reacoma.params.archetype.noveltyslice
+</code></pre></div><p>And then you check whether or not this archetype has been used before for your REAPER install.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua">reacoma.params.check_params(processor)
+</code></pre></div><p>You can then check against the names and values of the <code>processor</code> to observe and use the defaults in whatever way you see fit. In the default ReaCoMa scripts I heavy handedly redefine the names of the parameters as a comma separated string which is used to parse the parameters and to get stored state of that archetype&rsquo;s values if it exists. I do it this way because I want the order of parameters to be deterministic, as lua tables are hash tables and not ordered so reliably iterating over the tables parameters and values in the same order each call is not possibly. I also didn&rsquo;t want to add the extra overhead of implementing an ordered strucutre which makes the code more terse and less readable.</p>
+<p>In the simplest form you can extract a default like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua">parameter <span style="color:#f92672">=</span> processor[<span style="color:#e6db74">&#34;parameter_name&#34;</span>]
+</code></pre></div><p>and store it in an extended state like so:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua">reaper.SetExtState(processor.name, parameter_name, value)
+</code></pre></div><p>I perform a somewhat complex dance between extracting the values, formatting them as comma seperated strings and storing/recalling from the extended state if it exists so that I can then pass this information to <code>reaper.GetUserInputs()</code>. This function uses comma separated strings exclusively, otherwise everything would implemented as native lua tables.</p>
+<p>To prompt the user with some parameters and default values these are the essential parts you need.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#66d9ef">local</span> param_names <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;feature,threshold,kernelsize,filtersize,fftsettings,minslicelength&#34;</span>
+<span style="color:#66d9ef">local</span> param_values <span style="color:#f92672">=</span> reacoma.params.parse_params(param_names, processor)
+<span style="color:#66d9ef">local</span> confirm, user_inputs <span style="color:#f92672">=</span> reaper.GetUserInputs(<span style="color:#e6db74">&#34;Noveltyslice Parameters&#34;</span>, <span style="color:#ae81ff">6</span>, param_names, param_values)
+</code></pre></div><p>If the user confirms this dialogue box (in the case that they cancel or click away to cancel the action) we then go on to extract whatever they stored in the GUI and store this back in the extended states that populated the GUI in the first place.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua">reacoma.params.store_params(processor, param_names, user_inputs)
+</code></pre></div><p>You can also extract what the user selected by splitting the comma separated string that is returned by <code>reaper.GetUserInputs()</code> to then pass on values to the command line calls that are formed later on. For example:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#66d9ef">local</span> params <span style="color:#f92672">=</span> reacoma.utils.commasplit(user_inputs)
+<span style="color:#66d9ef">local</span> feature <span style="color:#f92672">=</span> params[<span style="color:#ae81ff">1</span>]
+<span style="color:#66d9ef">local</span> threshold <span style="color:#f92672">=</span> params[<span style="color:#ae81ff">2</span>]
+<span style="color:#66d9ef">local</span> kernelsize <span style="color:#f92672">=</span> params[<span style="color:#ae81ff">3</span>]
+<span style="color:#66d9ef">local</span> filtersize <span style="color:#f92672">=</span> params[<span style="color:#ae81ff">4</span>]
+<span style="color:#66d9ef">local</span> fftsettings <span style="color:#f92672">=</span> params[<span style="color:#ae81ff">5</span>]
+<span style="color:#66d9ef">local</span> minslicelength <span style="color:#f92672">=</span> params[<span style="color:#ae81ff">6</span>]
+</code></pre></div><p>This last bit is why there is so much faffing and so many conversions between tables and comma separated strings. We need to know the order of the parameters at all times so that we can appropriately structure the command line calls and to ensure that we don&rsquo;t assign the <code>threshold</code> to the <code>-feature</code> parameter for example.</p>
+</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+ 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/instantclick/3.1.0/instantclick.min.js" data-no-instant></script>
+<script data-no-instant>InstantClick.init();</script>
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#parameterslua">parameters.lua</a></li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/gh/cferdinandi/gumshoe@5/dist/gumshoe.polyfills.min.js"></script>
+<script>new Gumshoe('.book-toc a', { nested: true });</script>
+<style>
+.book-toc li.active > a {
+    font-weight: bold;
+}
+</style>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

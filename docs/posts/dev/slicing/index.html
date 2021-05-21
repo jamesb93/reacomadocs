@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="slicing.lua #  The slicing container #  The slicing container is very similar to the layers container containing empty containers that are ready to fill with relevant information for processing. What is unique to the slicing container is a blank internal table to hold slicing indices named slice_points_string. This is where we hold information on where to segment the source media item.
+slicing.container = { full_path = {}, item_pos = {}, item_pos_samples = {}, take_ofs = {}, take_ofs_samples = {}, item_len_samples = {}, cmd = {}, slice_points_string = {}, tmp = {}, item = {}, reverse = {}, sr = {}, playrate = {} } Populating the container #  Populating our data container is the same as what we have seen already.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="" />
+<meta property="og:description" content="slicing.lua #  The slicing container #  The slicing container is very similar to the layers container containing empty containers that are ready to fill with relevant information for processing. What is unique to the slicing container is a blank internal table to hold slicing indices named slice_points_string. This is where we hold information on where to segment the source media item.
+slicing.container = { full_path = {}, item_pos = {}, item_pos_samples = {}, take_ofs = {}, take_ofs_samples = {}, item_len_samples = {}, cmd = {}, slice_points_string = {}, tmp = {}, item = {}, reverse = {}, sr = {}, playrate = {} } Populating the container #  Populating our data container is the same as what we have seen already." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://reacoma.xyz/posts/dev/slicing/" /><meta property="article:section" content="posts" />
+
+
+
+<title>Slicing | ReaCoMa</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.8e82c146d672b4664b6f4f4a73d2435cb93d1290768897bbef6d59436d2d8fea.css" integrity="sha256-joLBRtZytGZLb09Kc9JDXLk9EpB2iJe7721ZQ20tj&#43;o="><!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>ReaCoMa</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><a href="/posts/tutorials/">Tutorials</a></li>
+<li><a href="/posts/installation/">Installation</a></li>
+<li><a href="/posts/usage/">Usage</a></li>
+<li><a href="/posts/development/">Development</a>
+<ul>
+<li><a href="/posts/dev/layers/">Layers</a></li>
+<li><a href="/posts/dev/slicing/"class=active>Slicing</a></li>
+<li><a href="/posts/dev/parameters/">Parameters</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Slicing</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#slicinglua">slicing.lua</a>
+      <ul>
+        <li><a href="#the-slicing-container">The slicing container</a></li>
+        <li><a href="#populating-the-container">Populating the container</a></li>
+        <li><a href="#executing-the-command-line-calls">Executing the command line calls</a></li>
+        <li><a href="#updating-the-arrangement-view">Updating the arrangement view</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown">
+  <h1>
+    <a href="/posts/dev/slicing/"></a>
+  </h1>
+  
+
+
+  
+
+  
+
+
+  <p><h1 id="slicinglua">
+  slicing.lua
+  <a class="anchor" href="#slicinglua">#</a>
+</h1>
+<h2 id="the-slicing-container">
+  The slicing container
+  <a class="anchor" href="#the-slicing-container">#</a>
+</h2>
+<p>The slicing container is very similar to the layers container containing empty containers that are ready to fill with relevant information for processing. What is unique to the slicing container is a blank internal table to hold slicing indices named <code>slice_points_string</code>. This is where we hold information on where to segment the source media item.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua">slicing.container <span style="color:#f92672">=</span> {
+    full_path <span style="color:#f92672">=</span> {},
+    item_pos <span style="color:#f92672">=</span> {},
+    item_pos_samples <span style="color:#f92672">=</span> {},
+    take_ofs <span style="color:#f92672">=</span> {},
+    take_ofs_samples <span style="color:#f92672">=</span> {},
+    item_len_samples <span style="color:#f92672">=</span> {},
+    cmd <span style="color:#f92672">=</span> {},
+    slice_points_string <span style="color:#f92672">=</span> {},
+    tmp <span style="color:#f92672">=</span> {},
+    item <span style="color:#f92672">=</span> {},
+    reverse <span style="color:#f92672">=</span> {},
+    sr <span style="color:#f92672">=</span> {},
+    playrate <span style="color:#f92672">=</span> {}
+}
+</code></pre></div><h2 id="populating-the-container">
+  Populating the container
+  <a class="anchor" href="#populating-the-container">#</a>
+</h2>
+<p>Populating our data container is the same as what we have seen already. We create an instance of it and then use a function to grab information for each selected media item.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#66d9ef">local</span> data <span style="color:#f92672">=</span> reacoma.slicing.container
+
+<span style="color:#66d9ef">for</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, reaper.CountSelectedMediaItems(<span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">do</span>
+    reacoma.layers.get_data(i, data)
+<span style="color:#66d9ef">end</span>
+</code></pre></div><h2 id="executing-the-command-line-calls">
+  Executing the command line calls
+  <a class="anchor" href="#executing-the-command-line-calls">#</a>
+</h2>
+<p>Again, the process for executing the command line calls mirrors what we have already seen. We have to form some strings that are stored and executed on the command line.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#66d9ef">local</span> cmd <span style="color:#f92672">=</span> exe <span style="color:#f92672">..</span> 
+<span style="color:#e6db74">&#34; -source &#34;</span> <span style="color:#f92672">..</span> reacoma.utils.doublequote(data.full_path[i]) <span style="color:#f92672">..</span> 
+<span style="color:#e6db74">&#34; -indices &#34;</span> <span style="color:#f92672">..</span> reacoma.utils.doublequote(data.tmp[i]) <span style="color:#f92672">..</span> 
+<span style="color:#e6db74">&#34; -maxfftsize &#34;</span> <span style="color:#f92672">..</span> reacoma.utils.getmaxfftsize(fftsettings) <span style="color:#f92672">..</span>
+<span style="color:#e6db74">&#34; -maxkernelsize &#34;</span> <span style="color:#f92672">..</span> kernelsize <span style="color:#f92672">..</span>
+<span style="color:#e6db74">&#34; -maxfiltersize &#34;</span> <span style="color:#f92672">..</span> filtersize <span style="color:#f92672">..</span>
+<span style="color:#e6db74">&#34; -feature &#34;</span> <span style="color:#f92672">..</span> feature <span style="color:#f92672">..</span> 
+<span style="color:#e6db74">&#34; -kernelsize &#34;</span> <span style="color:#f92672">..</span> kernelsize <span style="color:#f92672">..</span> 
+<span style="color:#e6db74">&#34; -threshold &#34;</span> <span style="color:#f92672">..</span> threshold <span style="color:#f92672">..</span> 
+<span style="color:#e6db74">&#34; -filtersize &#34;</span> <span style="color:#f92672">..</span> filtersize <span style="color:#f92672">..</span> 
+<span style="color:#e6db74">&#34; -fftsettings &#34;</span> <span style="color:#f92672">..</span> fftsettings <span style="color:#f92672">..</span> 
+<span style="color:#e6db74">&#34; -minslicelength &#34;</span> <span style="color:#f92672">..</span> minslicelength <span style="color:#f92672">..</span>
+<span style="color:#e6db74">&#34; -numframes &#34;</span> <span style="color:#f92672">..</span> data.item_len_samples[i] <span style="color:#f92672">..</span> 
+<span style="color:#e6db74">&#34; -startframe &#34;</span> <span style="color:#f92672">..</span> data.take_ofs_samples[i]
+table.insert(data.cmd, cmd)
+</code></pre></div><p>We then loop and execute a call for each media item selected and grab the result which is stored in a CSV file, appending it to the <code>slice_points_string</code> table inside our <code>data</code> container.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#66d9ef">for</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, num_selected_items <span style="color:#66d9ef">do</span>
+    reacoma.utils.cmdline(data.cmd[i])
+    table.insert(data.slice_points_string, reacoma.utils.readfile(data.tmp[i]))
+    reacoma.slicing.process(i, data)
+<span style="color:#66d9ef">end</span>
+</code></pre></div><p>There is a bit of wizardry to coerce the CSV outputs and to account for multiple channels being output to the CSV format which is why its wrapped up in the <code>reacoma.utils.readfile()</code> function.</p>
+<p>Once each call has been completed we segment the media items according to the slice_points_string data that was returned to us using the <code>reacoma.slicing.process()</code> function. I would encourage you to dig into this function which can be found in <code>slicing.lua</code>. It&rsquo;s quite involved and takes cares off some edge cases that can arise from the slicing processes, such as:</p>
+<ul>
+<li>No slices being made</li>
+<li>Ensuring that boundary slices exist</li>
+<li>Calculating slices on time stretched items</li>
+<li>Inverting the slicing values in time for reversed items</li>
+</ul>
+<h2 id="updating-the-arrangement-view">
+  Updating the arrangement view
+  <a class="anchor" href="#updating-the-arrangement-view">#</a>
+</h2>
+<p>Once we&rsquo;ve segmented the items we need to update the arrangement view. If you don&rsquo;t do this the changes won&rsquo;t propogate visually but actually are effective nonetheless.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua">reacoma.utils.arrange(<span style="color:#e6db74">&#34;reacoma-noveltyslice&#34;</span>)
+reacoma.utils.cleanup(data.tmp)
+</code></pre></div><p><code>reacoma.utils.cleanup()</code> is called to remove all of the temporary CSV files that are made as interim storage for slice information. This is pointed towards <code>data.tmp</code> which contains the full path for each file that was made in the whole process.</p>
+<p>Let&rsquo;s move on to how the parameter system works in the <code>lib</code>.</p>
+
+
+
+
+  
+
+<a  href="/posts/dev/parameters/"   class="book-btn">
+  Parameters
+</a>
+
+</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+ 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/instantclick/3.1.0/instantclick.min.js" data-no-instant></script>
+<script data-no-instant>InstantClick.init();</script>
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#slicinglua">slicing.lua</a>
+      <ul>
+        <li><a href="#the-slicing-container">The slicing container</a></li>
+        <li><a href="#populating-the-container">Populating the container</a></li>
+        <li><a href="#executing-the-command-line-calls">Executing the command line calls</a></li>
+        <li><a href="#updating-the-arrangement-view">Updating the arrangement view</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/gh/cferdinandi/gumshoe@5/dist/gumshoe.polyfills.min.js"></script>
+<script>new Gumshoe('.book-toc a', { nested: true });</script>
+<style>
+.book-toc li.active > a {
+    font-weight: bold;
+}
+</style>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

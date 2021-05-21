@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="layers.lua #  Let&rsquo;s break down the essential components of layers.lua.
+The container #  The layers.container is a table that represents the lifetime of a layers type process.
+layers.container = { full_path = {}, take = {}, item_pos = {}, item_pos_samples = {}, take_ofs = {}, take_ofs_samples = {}, item_len = {}, item_len_samples = {}, cmd = {}, item = {}, sr = {}, playrate = {}, playtype = {}, reverse = {}, outputs = {}, } It contains information such as the full path in your file system of media items and REAPER specific information such as the position, length, sample rate, playback rate and reverse status.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="" />
+<meta property="og:description" content="layers.lua #  Let&rsquo;s break down the essential components of layers.lua.
+The container #  The layers.container is a table that represents the lifetime of a layers type process.
+layers.container = { full_path = {}, take = {}, item_pos = {}, item_pos_samples = {}, take_ofs = {}, take_ofs_samples = {}, item_len = {}, item_len_samples = {}, cmd = {}, item = {}, sr = {}, playrate = {}, playtype = {}, reverse = {}, outputs = {}, } It contains information such as the full path in your file system of media items and REAPER specific information such as the position, length, sample rate, playback rate and reverse status." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://reacoma.xyz/posts/dev/layers/" /><meta property="article:section" content="posts" />
+
+
+
+<title>Layers | ReaCoMa</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.8e82c146d672b4664b6f4f4a73d2435cb93d1290768897bbef6d59436d2d8fea.css" integrity="sha256-joLBRtZytGZLb09Kc9JDXLk9EpB2iJe7721ZQ20tj&#43;o="><!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>ReaCoMa</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><a href="/posts/tutorials/">Tutorials</a></li>
+<li><a href="/posts/installation/">Installation</a></li>
+<li><a href="/posts/usage/">Usage</a></li>
+<li><a href="/posts/development/">Development</a>
+<ul>
+<li><a href="/posts/dev/layers/"class=active>Layers</a></li>
+<li><a href="/posts/dev/slicing/">Slicing</a></li>
+<li><a href="/posts/dev/parameters/">Parameters</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Layers</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#layerslua">layers.lua</a>
+      <ul>
+        <li><a href="#the-container">The container</a></li>
+        <li><a href="#executing-the-command-line-calls">Executing the command line calls</a></li>
+        <li><a href="#updating-the-arrangement-view">Updating the arrangement view</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown">
+  <h1>
+    <a href="/posts/dev/layers/"></a>
+  </h1>
+  
+
+
+  
+
+  
+
+
+  <p><h1 id="layerslua">
+  layers.lua
+  <a class="anchor" href="#layerslua">#</a>
+</h1>
+<p>Let&rsquo;s break down the essential components of <code>layers.lua</code>.</p>
+<h2 id="the-container">
+  The container
+  <a class="anchor" href="#the-container">#</a>
+</h2>
+<p>The <code>layers.container</code> is a table that represents the lifetime of a layers type process.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua">layers.container <span style="color:#f92672">=</span> {
+    full_path <span style="color:#f92672">=</span> {},
+    take <span style="color:#f92672">=</span> {},
+    item_pos <span style="color:#f92672">=</span> {},
+    item_pos_samples <span style="color:#f92672">=</span> {},
+    take_ofs <span style="color:#f92672">=</span> {},
+    take_ofs_samples <span style="color:#f92672">=</span> {},
+    item_len <span style="color:#f92672">=</span> {},
+    item_len_samples <span style="color:#f92672">=</span> {},
+    cmd <span style="color:#f92672">=</span> {},
+    item <span style="color:#f92672">=</span> {},
+    sr <span style="color:#f92672">=</span> {},
+    playrate <span style="color:#f92672">=</span> {},
+    playtype <span style="color:#f92672">=</span> {},
+    reverse <span style="color:#f92672">=</span> {},
+    outputs <span style="color:#f92672">=</span> {},
+}
+</code></pre></div><p>It contains information such as the full path in your file system of media items and REAPER specific information such as the position, length, sample rate, playback rate and reverse status. In addition to this it contains a value named <code>cmd</code> which acts as a container for command line calls which are stored as strings. Most importantly it contains a value named &lsquo;outputs&rsquo; which is programatically appended to with the outputs of each FluCoMa command-line process. For example, if you ran the <code>fluid-sines.lua</code> script the <code>sines</code> and <code>residual</code> outputs would be inserted to this field creating an internal structure like so:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua">outputs <span style="color:#f92672">=</span> {
+    sines <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;sines_path.wav&#34;</span>,
+    residual <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;residual_path.wav&#34;</span>
+}
+</code></pre></div><p>Taking <code>fluid-sines.lua</code> as an example, we can see that an instance of the <code>layers.container</code> is made at the start of the script.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#66d9ef">local</span> data <span style="color:#f92672">=</span> reacoma.layers.container
+</code></pre></div><p>To populate the <code>layers.container</code> with information we&rsquo;ll use <code>layers.get_data()</code>. This function programatically retrieves and stores information from selected media items into an instance of the layers container. If you observe the source code, these functions accept two arguments. The first argument is a value which pertains to the item that you have selected and the second argument is the name of the instance of your <code>layers.container</code>.</p>
+<p>For example, to store the data of the third selected item you would call this series of commands.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#66d9ef">local</span> data <span style="color:#f92672">=</span> reacoma.layers.container
+reacoma.layers.get_data(<span style="color:#ae81ff">3</span>, data)
+</code></pre></div><p>Conventionally, we wrap this function in a loop that iterates over all of the selected media items so that each item is processed separately. So something like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#66d9ef">local</span> data <span style="color:#f92672">=</span> reacoma.layers.container
+<span style="color:#66d9ef">for</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, reaper.CountSelectedMediaItems(<span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">do</span>
+    reacoma.layers.get_data(i, data)
+<span style="color:#66d9ef">end</span>
+</code></pre></div><p>The data relevant to the first media item is stored inside the <code>data</code> and is ordered, so you can access this data by index when needed.</p>
+<p>The next stage is to use this data to orchestrate the FluCoMa processes and update the arrangement view of your REAPER session. The first step in doing so, is to form the command line calls that will be executed for each REAPER media item.</p>
+<p>In the <code>fluid-transients.lua</code> example this too is managed inside of the loop that iterates over selected media items, at each iteration using the index of the selected item to access the relevant data from the <code>data</code> container such as the length of the item and the take offset in samples.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua">table.insert(
+    data.cmd, 
+    exe <span style="color:#f92672">..</span> 
+    <span style="color:#e6db74">&#34; -source &#34;</span> <span style="color:#f92672">..</span> reacoma.utils.doublequote(data.full_path[i]) <span style="color:#f92672">..</span> 
+    <span style="color:#e6db74">&#34; -transients &#34;</span> <span style="color:#f92672">..</span> reacoma.utils.doublequote(data.outputs.transients[i]) <span style="color:#f92672">..</span> 
+    <span style="color:#e6db74">&#34; -residual &#34;</span> <span style="color:#f92672">..</span> reacoma.utils.doublequote(data.outputs.residual[i]) <span style="color:#f92672">..</span>
+    <span style="color:#e6db74">&#34; -order &#34;</span> <span style="color:#f92672">..</span> order <span style="color:#f92672">..</span>
+    <span style="color:#e6db74">&#34; -blocksize &#34;</span> <span style="color:#f92672">..</span> blocksize <span style="color:#f92672">..</span>
+    <span style="color:#e6db74">&#34; -padsize &#34;</span> <span style="color:#f92672">..</span> padsize <span style="color:#f92672">..</span>
+    <span style="color:#e6db74">&#34; -skew &#34;</span> <span style="color:#f92672">..</span> skew <span style="color:#f92672">..</span>
+    <span style="color:#e6db74">&#34; -threshfwd &#34;</span> <span style="color:#f92672">..</span> threshfwd <span style="color:#f92672">..</span> 
+    <span style="color:#e6db74">&#34; -threshback &#34;</span> <span style="color:#f92672">..</span> threshback <span style="color:#f92672">..</span>
+    <span style="color:#e6db74">&#34; -windowsize &#34;</span> <span style="color:#f92672">..</span> windowsize <span style="color:#f92672">..</span> 
+    <span style="color:#e6db74">&#34; -clumplength &#34;</span> <span style="color:#f92672">..</span> clumplength <span style="color:#f92672">..</span>
+    <span style="color:#e6db74">&#34; -numframes &#34;</span> <span style="color:#f92672">..</span> data.item_len_samples[i] <span style="color:#f92672">..</span> 
+    <span style="color:#e6db74">&#34; -startframe &#34;</span> <span style="color:#f92672">..</span> data.take_ofs_samples[i]
+)
+</code></pre></div><p>We insert this massive string into the <code>cmd</code> table, again in an ordered fashion giving it an association between its position in the table and the item number that is selected. In theory, media item number 4 will be stored at <code>data.cmd[4]</code>.</p>
+<p>The <code>exe</code> variable is created almost at the very start of the script and is formed by concatenating the known path to the binary files which were set at installation with the name of the binary itself.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#66d9ef">local</span> exe <span style="color:#f92672">=</span> reacoma.utils.doublequote(
+    reacoma.settings.path <span style="color:#f92672">..</span> <span style="color:#e6db74">&#34;/fluid-noveltyslice&#34;</span>
+)
+</code></pre></div><blockquote class="book-hint warning">
+  In this example you can see variables (<code>order</code>, <code>blocksize</code>, <code>windowsize</code> etc.) that I haven&rsquo;t accounted for or explained. I&rsquo;ll get back around to explaining how these parameters are gathered in the <a href="/posts/dev/parameters/">parameters</a> section.
+</blockquote>
+
+<h2 id="executing-the-command-line-calls">
+  Executing the command line calls
+  <a class="anchor" href="#executing-the-command-line-calls">#</a>
+</h2>
+<p>This part is actually very simple. We re-loop over the number of selected items and use the strings stored in <code>data.cmd</code> as the argument to the <code>reacoma.utils.cmdline()</code> function. This will produce wave file outputs which can then be integrated into the arrangement view.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#66d9ef">for</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, reaper.CountSelectedMediaItems(<span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">do</span>
+    reacoma.utils.cmdline(data.cmd[i])
+<span style="color:#66d9ef">end</span>
+</code></pre></div><h2 id="updating-the-arrangement-view">
+  Updating the arrangement view
+  <a class="anchor" href="#updating-the-arrangement-view">#</a>
+</h2>
+<p>The last piece of the puzzle is to take all of the files that were output from the command line calls and attach them as takes to the original source media items.</p>
+<p>For layers type processes this is wrapped up neatly in the <code>reacoma.layers.process()</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua">layers.process <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>(item_index, data)
+    <span style="color:#66d9ef">if</span> item_index <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">then</span> reaper.SetMediaItemSelected(data.item[item_index<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>], <span style="color:#66d9ef">false</span>) <span style="color:#66d9ef">end</span>
+    reaper.SetMediaItemSelected(data.item[item_index], <span style="color:#66d9ef">true</span>)
+    <span style="color:#66d9ef">for</span> k, v <span style="color:#66d9ef">in</span> orderedPairs(data.outputs) <span style="color:#66d9ef">do</span>
+        reaper.InsertMedia(data.outputs[k][item_index], <span style="color:#ae81ff">3</span>)
+        <span style="color:#66d9ef">local</span> item <span style="color:#f92672">=</span> reaper.GetSelectedMediaItem(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>)
+        <span style="color:#66d9ef">local</span> take <span style="color:#f92672">=</span> reaper.GetActiveTake(item)
+        <span style="color:#66d9ef">local</span> src <span style="color:#f92672">=</span> reaper.GetMediaItemTake_Source(take)
+        reaper.SetMediaItemTakeInfo_Value(take, <span style="color:#e6db74">&#34;D_PLAYRATE&#34;</span>, data.playrate[item_index])
+        reaper.SetMediaItemTakeInfo_Value(take, <span style="color:#e6db74">&#34;I_PITCHMODE&#34;</span>, data.playtype[item_index])
+        <span style="color:#66d9ef">if</span> data.reverse[item_index] <span style="color:#66d9ef">then</span> reaper.Main_OnCommand(<span style="color:#ae81ff">41051</span>, <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">end</span>
+    <span style="color:#66d9ef">end</span>
+<span style="color:#66d9ef">end</span>
+</code></pre></div><p>This function seems complex on the surface but is easily broken down into some simple essential components with some extra decorations. It takes an item_index and a data container as arguments with the convention that the function is placed within a loop that iterates over selected media items. The function could be reduced to some key parts that excludes some of the fancy functions I&rsquo;ve implemented, such as taking care of copying the source item&rsquo;s playback rate and time stretching algorithms.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua">layers.process <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>(item_index, data)
+    reaper.SetMediaItemSelected(data.item[item_index], <span style="color:#66d9ef">true</span>)
+    <span style="color:#66d9ef">for</span> k, v <span style="color:#66d9ef">in</span> orderedPairs(data.outputs) <span style="color:#66d9ef">do</span>
+        reaper.InsertMedia(data.outputs[k][item_index], <span style="color:#ae81ff">3</span>)
+    <span style="color:#66d9ef">end</span>
+<span style="color:#66d9ef">end</span>
+</code></pre></div><p>This rapid loop simulates selecting a media item <code>reaper.SetMediaItemSelected(data.item[item_index], true)</code> and enumerating over the outputs stored in <code>data.outputs</code> at the <code>item_index</code>. For each item that is enumerated `reaper.InsertMedia(data.outputs[k][item_index], 3) is called which appends the file to the source media item.</p>
+<p>The arrangement view is then updated by the function <code>reacoma.utils.arrange()</code> which does two things.</p>
+<ol>
+<li>Create the beginning of an &lsquo;undo block&rsquo; via <code>reaper.Undo_BeginBlock(undo_msg)</code>. This is similar to creating a restore point. Every <code>reaper</code> call after this is recorded in the block until <code>reaper.Undo_EndBlock()</code> is called.</li>
+<li>Update the arrangement view via <code>reaper.UpdateArrange()</code></li>
+<li>Close off the undo block with <code>reaper.Undo_EndBlock()</code> taking the argument <code>undo_msg</code> as the unique identifier for the undo block.</li>
+</ol>
+<p>That covers the essential lifetime of a layers process, disregarding the way in which specific algorithm parameters are corralled into each script. Parameter management is quite generic and independent from the algorithm so this will be covered separately.</p>
+
+
+
+
+  
+
+<a  href="/posts/dev/slicing/"   class="book-btn">
+  Slicing
+</a>
+
+</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+ 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/instantclick/3.1.0/instantclick.min.js" data-no-instant></script>
+<script data-no-instant>InstantClick.init();</script>
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#layerslua">layers.lua</a>
+      <ul>
+        <li><a href="#the-container">The container</a></li>
+        <li><a href="#executing-the-command-line-calls">Executing the command line calls</a></li>
+        <li><a href="#updating-the-arrangement-view">Updating the arrangement view</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/gh/cferdinandi/gumshoe@5/dist/gumshoe.polyfills.min.js"></script>
+<script>new Gumshoe('.book-toc a', { nested: true });</script>
+<style>
+.book-toc li.active > a {
+    font-weight: bold;
+}
+</style>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

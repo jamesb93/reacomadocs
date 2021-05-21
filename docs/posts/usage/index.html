@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" dir=>
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Usage #  How to execute the scripts #  Once you have followed all the steps of the installation process you can simply execute one of the scripts by doing the following.
+ Shift &#43; / (or as I like to call it ?) to bring up the Action Menu Select the action ReaScript: Run Reascript (EEL or Lua) Select the desired script which you have cleverly stored in an easy to find location.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="" />
+<meta property="og:description" content="Usage #  How to execute the scripts #  Once you have followed all the steps of the installation process you can simply execute one of the scripts by doing the following.
+ Shift &#43; / (or as I like to call it ?) to bring up the Action Menu Select the action ReaScript: Run Reascript (EEL or Lua) Select the desired script which you have cleverly stored in an easy to find location." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://reacoma.xyz/posts/usage/" /><meta property="article:section" content="posts" />
+
+
+
+<title>Usage | ReaCoMa</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.8e82c146d672b4664b6f4f4a73d2435cb93d1290768897bbef6d59436d2d8fea.css" integrity="sha256-joLBRtZytGZLb09Kc9JDXLk9EpB2iJe7721ZQ20tj&#43;o="><!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body dir=>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>ReaCoMa</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><a href="/posts/tutorials/">Tutorials</a></li>
+<li><a href="/posts/installation/">Installation</a></li>
+<li><a href="/posts/usage/"class=active>Usage</a></li>
+<li><a href="/posts/development/">Development</a>
+<ul>
+<li><a href="/posts/dev/layers/">Layers</a></li>
+<li><a href="/posts/dev/slicing/">Slicing</a></li>
+<li><a href="/posts/dev/parameters/">Parameters</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Usage</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#usage">Usage</a>
+      <ul>
+        <li><a href="#how-to-execute-the-scripts">How to execute the scripts</a></li>
+        <li><a href="#what-will-happen">What will happen?</a>
+          <ul>
+            <li><a href="#slicing">Slicing</a></li>
+            <li><a href="#objectslayers">Objects/Layers</a></li>
+            <li><a href="#dealing-with-the-output">Dealing with the output</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown">
+  <h1>
+    <a href="/posts/usage/"></a>
+  </h1>
+  
+
+
+  
+
+  
+
+
+  <p><h1 id="usage">
+  Usage
+  <a class="anchor" href="#usage">#</a>
+</h1>
+<h2 id="how-to-execute-the-scripts">
+  How to execute the scripts
+  <a class="anchor" href="#how-to-execute-the-scripts">#</a>
+</h2>
+<p>Once you have followed all the steps of the installation process you can simply execute one of the scripts by doing the following.</p>
+<ol>
+<li><code>Shift + /</code> (or as I like to call it <strong><code>?</code></strong>) to bring up the Action Menu</li>
+<li>Select the action <code>ReaScript: Run Reascript (EEL or Lua)</code></li>
+<li>Select the desired script which you have cleverly stored in an easy to find location.</li>
+</ol>
+<p>All of the scripts are named to match up the corresponding algorithm. For example, to do harmonic percussive separation, you would need to run the <code>fluid-hpss.lua</code> script.</p>
+<p>The first time that you execute any of the scripts you will be asked to provide a path to the location of the command line tools. Dont worry, this only happens once per REAPER installation. If you decided to put the executables in <code>/usr/local/bin</code> then provide that path to the pop-up box.</p>
+<h2 id="what-will-happen">
+  What will happen?
+  <a class="anchor" href="#what-will-happen">#</a>
+</h2>
+<h3 id="slicing">
+  Slicing
+  <a class="anchor" href="#slicing">#</a>
+</h3>
+<p>So far, all of the slicing based algorithms will directly segment media items in the arrangement. This is not destructive and is like calling the <code>Split</code> action multiple times (<code>S</code>). You can undo just like any other action and your original media item is restored to its previously unsegmented state. The numerical results are stored in temporary csv files and are deleted as soon as the process is completed.</p>
+<h3 id="objectslayers">
+  Objects/Layers
+  <a class="anchor" href="#objectslayers">#</a>
+</h3>
+<p>Any algorithm that should produce new media files, <code>nmf</code>, <code>hpss</code>, <code>transients</code> or <code>sines</code> output to a location set by ReaCoMa. By default, new files are located within the same directory as the source material. You can modify this behaviour by changing the value for <code>reacoma.output</code> in <code>config.lua</code>.</p>
+<blockquote class="book-hint info">
+  <p>There are three options for changing the ReaCoMa output.</p>
+<h4 id="source">&ldquo;source&rdquo;</h4>
+<p>New files will be output to the same directory as the source</p>
+<h4 id="media">&ldquo;media&rdquo;</h4>
+<p>New files will be output to the REAPER Media folder.</p>
+<h4 id="custom-path">custom path</h4>
+<p>New files will be output to the path set. The path needs to be absolute, but ~ expansion is supported.</p>
+
+</blockquote>
+
+<p>The results of the process will be appended to a take of the source material. <code>fluid-sines.lua</code> for example will append 2 new takes to the original source item containing the sinusoidal and residual extractions respectively. My rationale for implementing this behaviour is so that you can quickly audition the results or replace source audio with your output process without too much fiddling. The outlier in this case is <code>fluid-nmf.lua</code> which will append a multichannel take containing the components asked for by the user.</p>
+<h3 id="dealing-with-the-output">
+  Dealing with the output
+  <a class="anchor" href="#dealing-with-the-output">#</a>
+</h3>
+<p>I would recommend you become familiar with two actions:</p>
+<ol>
+<li><code>explode multichannel audio to...</code></li>
+<li><code>explode takes of items to new tracks</code></li>
+</ol>
+<p>Again, these can be found in the action menu <strong>(<code>?</code>)</strong>. This will allow you to explode the output of a FluCoMa process to new tracks for more fine tuned manipulation.</p>
+</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+ 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/instantclick/3.1.0/instantclick.min.js" data-no-instant></script>
+<script data-no-instant>InstantClick.init();</script>
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#usage">Usage</a>
+      <ul>
+        <li><a href="#how-to-execute-the-scripts">How to execute the scripts</a></li>
+        <li><a href="#what-will-happen">What will happen?</a>
+          <ul>
+            <li><a href="#slicing">Slicing</a></li>
+            <li><a href="#objectslayers">Objects/Layers</a></li>
+            <li><a href="#dealing-with-the-output">Dealing with the output</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/gh/cferdinandi/gumshoe@5/dist/gumshoe.polyfills.min.js"></script>
+<script>new Gumshoe('.book-toc a', { nested: true });</script>
+<style>
+.book-toc li.active > a {
+    font-weight: bold;
+}
+</style>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
